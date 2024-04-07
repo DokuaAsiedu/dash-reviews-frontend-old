@@ -8,16 +8,20 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
-      },
 			colors: {
-				"milky-white": "#FBFCFD",
+				"milk-white": "#FAFCFD",
 				porcelain: "#F1F2F3",
 				"alice-blue": "#F3F7FF",
 				"ultramarine-blue": "#3366FF",
+				"cornflower": "#5378F6",
+				"onyx": "#101012",
+				"geyser": "#D4DCF1",
+				"grey-goose": "#D1D1D1",
+				"down-river": "#0D2159",
+				"dark-jungle-green": "#1E1E1E",
+				"dark-blue-grey": "#213449",
+				"golden": "#FABB07",
+				"alabaster": "#FBFAFC",
 			}
     },
     container: {

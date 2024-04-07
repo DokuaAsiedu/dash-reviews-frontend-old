@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-	@apply bg-milky-white;
+	@apply bg-milk-white text-dark-jungle-green;
 }
 
 .hide-scrollbar {
@@ -14,4 +14,8 @@ body {
 .hide-scrollbar::-webkit-scrollbar {
 	width: 0;
 	height: 0;
+}
+
+.wrapper {
+	@apply h-screen;
 }

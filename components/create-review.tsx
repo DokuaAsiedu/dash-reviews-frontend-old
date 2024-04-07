@@ -41,16 +41,18 @@ export function CreateReview({ openModal }) {
 		setAmenities(amenitiesCopy);
 	};
 
-	const handleStarClick = (index) => {
+	const handleStarClick = (event, index) => {
 		setRating(index + 1);
+    
 
 		starsRef.current.forEach((item, i) => {
 			item.firstElementChild.classList.remove(
 				"fill-transparent",
-				"fill-yellow-400"
+				"fill-golden",
+				// "fill-yellow-200",
 			);
 			if (i <= index) {
-				item.firstElementChild.classList.add("fill-yellow-400");
+				item.firstElementChild.classList.add("fill-golden");
 			} else {
 				item.firstElementChild.classList.add("fill-transparent");
 			}
@@ -88,9 +90,9 @@ export function CreateReview({ openModal }) {
 			locationId,
 			locationName,
 			date: Date.now(),
-			anon,
 			commentData: {
 				opName: userName,
+			  anon,
 				opId: 1,
 				commentText: review,
 				likeCount: 0,
@@ -98,6 +100,7 @@ export function CreateReview({ openModal }) {
 				commentCount: 0,
 				amenities,
 				rating,
+        pictureUrls: []
 			},
 		};
 
@@ -136,11 +139,11 @@ export function CreateReview({ openModal }) {
 	return (
 		<div className="fixed w-full h-full flex flex-col items-center justify-center">
 			<div
-				className="absolute z-10 w-full h-full bg-[#213449]/90"
+				className="absolute z-10 w-full h-full bg-dark-blue-grey/90"
 				onClick={() => openModal(false)}
 			></div>
 
-			<div className="relative z-20 w-3/5 p-4 flex flex-col items-stretch justify-start gap-4 rounded-md bg-[#FAFCFD]">
+			<div className="relative z-20 w-3/5 p-4 flex flex-col items-stretch justify-start gap-4 rounded-md bg-milk-white text-sm">
 				{amenitiesOpen && (
 					<div
 						className="absolute left-0 top-0 z-[5] h-full w-full bg-transparent"
@@ -152,7 +155,7 @@ export function CreateReview({ openModal }) {
 
 				<h3 className="text-xl">Bonnie and Clyde Street, Ajao State, Lagos</h3>
 
-				<div className=" bg-blue-100">
+				<div className="bg-alice-blue rounded-md">
 					<button
 						onClick={() => {
 							setAmenitiesOpen((prev) => !prev);
@@ -162,7 +165,7 @@ export function CreateReview({ openModal }) {
 						<p className="truncate">
 							{amenities.length > 0 ? amenities.join(", ") : "Select Amenities"}
 						</p>
-						<RiArrowDropDownLine />
+						<RiArrowDropDownLine className="text-2xl"/>
 					</button>
 					{amenitiesOpen && (
 						<div className="relative">
@@ -203,10 +206,10 @@ export function CreateReview({ openModal }) {
 									}}
 								>
 									<AiFillStar
-										className="text-2xl stroke-[15px] fill-transparent"
-										onMouseOver={(event) => handleStarHover(event, index)}
-										onMouseLeave={handleStarHover}
-										onClick={() => handleStarClick(index)}
+										className="text-2xl stroke-[15px] fill-transparent cursor-pointer"
+										// onMouseOver={(event) => handleStarHover(event, index)}
+										// onMouseLeave={handleStarHover}
+										onClick={(e) => handleStarClick(e, index)}
 									/>
 								</div>
 							);
@@ -219,7 +222,7 @@ export function CreateReview({ openModal }) {
 					<div>
 						<textarea
 							rows={3}
-							className="w-full p-2 resize-none"
+							className="w-full p-2 rounded-md bg-alabaster resize-none border-[1px] border-cornflower"
 							value={review}
 							onChange={(event) => setReview(event.target.value)}
 						/>
@@ -233,13 +236,13 @@ export function CreateReview({ openModal }) {
 						checked={anon}
 						onChange={() => setAnon((prev) => !prev)}
 					/>
-					<label htmlFor="anon">Post as anonymous</label>
+					<label htmlFor="anon">Post as Anonymous</label>
 				</div>
 
 				<div className="grid grid-cols-2 gap-2">
 					<div>
 						<button
-							className="w-full py-2 bg-purple-400 border-[1px] border-purple-400 text-white  rounded-md disabled:cursor-not-allowed"
+							className="w-full py-2 bg-cornflower border-[1px] border-cornflower text-white  rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
 							onClick={handleSubmit}
 							disabled={!canSubmit}
 						>
@@ -248,7 +251,7 @@ export function CreateReview({ openModal }) {
 					</div>
 					<div>
 						<button
-							className="w-full py-2 bg-white text-blue-500 border-[1px] border-blue-500 rounded-md"
+							className="w-full py-2 bg-white text-cornflower border-[1px] border-cornflower rounded-md"
 							onClick={() => openModal(false)}
 						>
 							CANCEL

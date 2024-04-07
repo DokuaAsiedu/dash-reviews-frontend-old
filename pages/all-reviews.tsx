@@ -2,7 +2,7 @@ import { GeneralLayout } from "@/layouts";
 import { CiBookmark } from "react-icons/ci";
 import { IoShareSocialOutline } from "react-icons/io5";
 import { CreateReview, ReviewCard, Tag } from "@/components";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { DbContext } from "@/context";
 import Image from "next/image";
 import Avatar from "@/assets/avatar.svg"
@@ -14,21 +14,18 @@ export default function AllReviews() {
 	const { db } = useContext(DbContext);
 	const locationName = "Bonny and Clyde Street, Ajao Estate, Lagos";
 	const userName = "Jane Doe";
-
-	useEffect(() => {
-		document.body.style.backgroundColor = "#FAFCFD";
-	}, []);
+  const numOfReviews = useMemo(() => db.filter((item) => item.locationId === locationId).length, [db])
 
 	return (
 		<GeneralLayout>
 			<div className="container flex flex-col items-stretch justify-start gap-2">
 				<div className="flex flex-row items-center justify-start gap-2">
 					<div>
-						<h2 className="font-bold">{locationName}</h2>
+						<h2 className="font-bold text-xl">{locationName}</h2>
 						<p>
-							&ldquo;
-							{db.filter((item) => item.locationId === locationId).length}
-							&rdquo; Reviews (People are raving about the selected location)
+							<span className="font-bold">&ldquo;
+							{numOfReviews}
+							&rdquo; Reviews</span> (People are raving about the selected location)
 						</p>
 					</div>
 
@@ -58,8 +55,8 @@ export default function AllReviews() {
 					{db
 						.filter((item) => item.locationId === locationId)
 						.map((item) =>
-							item.commentData.amenities.map((item, index) => {
-								return <Tag key={`item-${index}`} name={item} />;
+							item.commentData.amenities.map((el, index) => {
+								return <Tag key={`item-${index}`} name={el} />;
 							})
 						)}
 				</div>
@@ -74,14 +71,21 @@ export default function AllReviews() {
 						})}
 				</div>
 
-				<div className="min-h-0 grid grid-cols-2 content-start gap-4 overflow-">
-					{[...Array(4).keys()].map((item, index) => {
-						return (
-							<div key={`item-${index}`}>
-								<Image src={Avatar} alt="image alt" width={32} height={32} className="min-h-0" />
-							</div>
-						);
-					})}
+				<div className="min-h-0 grid grid-cols-2 content-start gap-4 overflow-y-auto hide-scrollbar">
+					{db
+						.filter((item) => item.locationId === locationId)
+            .map((item) => 
+              // console.log(item.commentData.pictureUrls)
+              item.commentData.pictureUrls.map((url, index) => {
+                console.log(url, index)
+                return (
+                  <div key={`item-${index}`}>
+                    <Image src={url} alt="image alt" width={64} height={64} className="" />
+                  </div>
+                )
+              })
+            )
+					}
 				</div>
 			</div>
 			{showModal && <CreateReview openModal={setShowModal} />}

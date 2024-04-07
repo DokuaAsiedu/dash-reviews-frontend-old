@@ -17,6 +17,7 @@ export const DB_REVIEWS = [
 			commentCount: 8,
 			amenities: ["security", "quiet"],
 			rating: 3,
+      pictureUrls: ['/assets/location-images/img-1.png']
 		},
 	},
 	{
@@ -33,6 +34,7 @@ export const DB_REVIEWS = [
 			commentCount: 8,
 			amenities: ["water", "quiet"],
 			rating: 3,
+      pictureUrls: [ '/assets/location-images/img-2.png']
 		},
 	},
 ];
