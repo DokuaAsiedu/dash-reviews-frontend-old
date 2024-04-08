@@ -1,94 +1,94 @@
+import React from "react";
 import { GeneralLayout } from "@/layouts";
 import { CiBookmark } from "react-icons/ci";
 import { IoShareSocialOutline } from "react-icons/io5";
-import { CreateReview, ReviewCard, Tag } from "@/components";
+import { CreateReview, ReviewCard, Search, Tag } from "@/components";
 import { useContext, useEffect, useMemo, useState } from "react";
-import { DbContext } from "@/context";
+import { DbContext } from "@/providers/db-provider";
 import Image from "next/image";
-import Avatar from "@/assets/avatar.svg"
+import Avatar from "@/assets/avatar.svg";
 
 export default function AllReviews() {
-	const [showModal, setShowModal] = useState(false);
-	const locationId = 0;
+  const [showModal, setShowModal] = useState(false);
+  const locationId = 0;
 
-	const { db } = useContext(DbContext);
-	const locationName = "Bonny and Clyde Street, Ajao Estate, Lagos";
-	const userName = "Jane Doe";
-  const numOfReviews = useMemo(() => db.filter((item) => item.locationId === locationId).length, [db])
+  const { db } = useContext(DbContext);
+  const locationName = "Bonny and Clyde Street, Ajao Estate, Lagos";
+  const userName = "Jane Doe";
+  const numOfReviews = useMemo(() => db.filter((item) => item.locationId === locationId).length, [db]);
 
-	return (
-		<GeneralLayout>
-			<div className="container flex flex-col items-stretch justify-start gap-2">
-				<div className="flex flex-row items-center justify-start gap-2">
-					<div>
-						<h2 className="font-bold text-xl">{locationName}</h2>
-						<p>
-							<span className="font-bold">&ldquo;
-							{numOfReviews}
-							&rdquo; Reviews</span> (People are raving about the selected location)
-						</p>
-					</div>
+  return (
+    <GeneralLayout navbar={<Search />}>
+      <div className="container flex flex-col items-stretch justify-start gap-2">
+        <div className="flex flex-row items-center justify-start gap-2">
+          <div>
+            <h2 className="font-bold text-xl">{locationName}</h2>
+            <p>
+              <span className="font-bold">
+                &ldquo;
+                {numOfReviews}
+                &rdquo; Reviews
+              </span>{" "}
+              (People are raving about the selected location)
+            </p>
+          </div>
 
-					<div className="ms-auto">
-						<button
-							className="px-4 py-1 rounded-md bg-ultramarine-blue text-white"
-							onClick={() => setShowModal(true)}
-						>
-							LEAVE A REVIEW
-						</button>
-					</div>
+          <div className="ms-auto">
+            <button className="px-4 py-1 rounded-md bg-ultramarine-blue text-white" onClick={() => setShowModal(true)}>
+              LEAVE A REVIEW
+            </button>
+          </div>
 
-					<div>
-						<button className="h-full p-2 rounded-md bg-white border-[1px] border-blue-200">
-							<IoShareSocialOutline className="stroke-blue-200" />
-						</button>
-					</div>
+          <div>
+            <button className="h-full p-2 rounded-md bg-white border-[1px] border-blue-200">
+              <IoShareSocialOutline className="stroke-blue-200" />
+            </button>
+          </div>
 
-					<div>
-						<button className="h-full p-2 rounded-md bg-white border-[1px] border-blue-200">
-							<CiBookmark className="stroke-blue-200 text-blue-200" />
-						</button>
-					</div>
-				</div>
+          <div>
+            <button className="h-full p-2 rounded-md bg-white border-[1px] border-blue-200">
+              <CiBookmark className="stroke-blue-200 text-blue-200" />
+            </button>
+          </div>
+        </div>
 
-				<div className="px-2 flex flex-row items-center justify-start gap-4 overflow-x-scroll hide-scrollbar">
-					{db
-						.filter((item) => item.locationId === locationId)
-						.map((item) =>
-							item.commentData.amenities.map((el, index) => {
-								return <Tag key={`item-${index}`} name={el} />;
-							})
-						)}
-				</div>
-			</div>
+        <div className="px-2 flex flex-row items-center justify-start gap-4 overflow-x-scroll hide-scrollbar">
+          {db
+            .filter((item) => item.locationId === locationId)
+            .map((item) =>
+              item.commentData.amenities.map((el, index) => {
+                return <Tag key={`item-${index}`} name={el} />;
+              }),
+            )}
+        </div>
+      </div>
 
-			<div className="container min-h-0 grid grid-cols-2">
-				<div className="min-h-0 flex flex-col items-stretch justify-start overflow-y-auto hide-scrollbar *:border-b-[1px] *:border-b-black">
-					{db
-						.filter((item) => item.locationId === locationId)
-						.map((item, index) => {
-							return <ReviewCard key={`item-${index}`} itemData={item} />;
-						})}
-				</div>
+      <div className="container min-h-0 grid grid-cols-2">
+        <div className="min-h-0 flex flex-col items-stretch justify-start overflow-y-auto hide-scrollbar *:border-b-[1px] *:border-b-black">
+          {db
+            .filter((item) => item.locationId === locationId)
+            .map((item, index) => {
+              return <ReviewCard key={`item-${index}`} itemData={item} />;
+            })}
+        </div>
 
-				<div className="min-h-0 grid grid-cols-2 content-start gap-4 overflow-y-auto hide-scrollbar">
-					{db
-						.filter((item) => item.locationId === locationId)
-            .map((item) => 
+        <div className="min-h-0 grid grid-cols-2 content-start gap-4 overflow-y-auto hide-scrollbar">
+          {db
+            .filter((item) => item.locationId === locationId)
+            .map((item) =>
               // console.log(item.commentData.pictureUrls)
               item.commentData.pictureUrls.map((url, index) => {
-                console.log(url, index)
+                console.log(url, index);
                 return (
                   <div key={`item-${index}`}>
                     <Image src={url} alt="image alt" width={64} height={64} className="" />
                   </div>
-                )
-              })
-            )
-					}
-				</div>
-			</div>
-			{showModal && <CreateReview openModal={setShowModal} />}
-		</GeneralLayout>
-	);
+                );
+              }),
+            )}
+        </div>
+      </div>
+      {showModal && <CreateReview openModal={setShowModal} />}
+    </GeneralLayout>
+  );
 }

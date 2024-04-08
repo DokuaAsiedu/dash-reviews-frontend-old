@@ -2,20 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
+html,
+body,
+#__next {
+  @apply h-screen;
+}
+
 body {
-	@apply bg-milk-white text-dark-jungle-green;
+  @apply bg-milk-white text-dark-jungle-green;
 }
 
 .hide-scrollbar {
-	scrollbar-width: none; /* Firefox */
-	-ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
 }
 
 .hide-scrollbar::-webkit-scrollbar {
-	width: 0;
-	height: 0;
-}
-
-.wrapper {
-	@apply h-screen;
+  width: 0;
+  height: 0;
 }

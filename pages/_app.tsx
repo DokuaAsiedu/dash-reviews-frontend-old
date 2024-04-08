@@ -1,11 +1,11 @@
-import { Context } from "@/context";
+import { DbProvider } from "@/providers/db-provider";
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <Context>
+    <DbProvider>
       <Component {...pageProps} />
-    </Context>
+    </DbProvider>
   );
 }
