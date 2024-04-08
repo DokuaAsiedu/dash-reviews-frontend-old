@@ -20,13 +20,13 @@ export function ReviewCard({
 
   return (
     <div
-      className={`p-4 flex flex-col items-stretch justify-start whitespace-normal min-w-[80%] ${pathname === "/" ? "bg-white rounded-xl" : "gap-2"}`}>
+      className={`min-w-[80%] p-4 flex flex-col items-stretch justify-start whitespace-normal ${pathname === "/" ? "bg-white rounded-xl" : "gap-2"}`}>
       <div className="flex flex-row items-center justify-start gap-2">
         <div className="">
           <Image src={Avatar} width={32} height={32} alt="pic" className="h-fit aspect-square rounded-full" />
         </div>
 
-        <div className={`flex ${pathname === "/" ? "flex-col items-start" : "flex-row items-center gap-2"}`}>
+        <div className={`flex ${pathname === "/" ? "flex-col items-start" : "flex-col md:flex-row items-start md:items-center gap-2"}`}>
           <p className="font-bold">{anon ? "Anonymous" : opName}</p>
           <p className="text-xs">2 months ago</p>
         </div>
@@ -55,7 +55,7 @@ export function ReviewCard({
         <p>{commentText}</p>
       </div>
 
-      <div className="flex flex-row items-center justify-start gap-3 text-base">
+      <div className="mt-auto flex flex-row items-center justify-start gap-3 text-base">
         <div className="flex flex-row items-center justify-start gap-1">
           <AiFillLike
             className={`${pathname === "/" ? "fill-grey-goose" : "fill-transparent stroke-[50px] stroke-down-river"}`}

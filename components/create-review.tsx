@@ -1,6 +1,6 @@
 import { AMENITIES } from "@/constants";
-import { DbContext } from "@/providers/db-provider";
-import { useContext, useEffect, useRef, useState } from "react";
+import { DbContext, useDbProvider } from "@/providers/db-provider";
+import React, { useContext, useEffect, useRef, useState } from "react";
 // import { createPortal } from "react-dom";
 // import { createPortal } from "react-dom";
 import { AiFillStar } from "react-icons/ai";
@@ -8,16 +8,16 @@ import { RiArrowDropDownLine } from "react-icons/ri";
 // import { AMENITIES } from "../constants";
 // import { DbContext } from "../App";
 
-export function CreateReview({ openModal }) {
+export function CreateReview({ openModal }: {openModal: (key: boolean) => void}) {
   const [amenitiesOpen, setAmenitiesOpen] = useState(false);
   const [amenities, setAmenities] = useState([]);
-  const [rating, setRating] = useState(null);
+  const [rating, setRating] = useState(0);
   const [review, setReview] = useState("");
   const [anon, setAnon] = useState(false);
   const [canSubmit, setCanSubmit] = useState(false);
   const starsRef = useRef([]);
 
-  const { db, setDb } = useContext(DbContext);
+  const { reviews, updateReviews } = useDbProvider();
 
   const locationId = 0;
   const locationName = "Bonny and Clyde Street, Ajao Estate, Lagos";
@@ -82,11 +82,12 @@ export function CreateReview({ openModal }) {
 
   const handleSubmit = () => {
     // console.log({ amenities, rating, review, anon });
+    const reviewsCopy = [...reviews]
 
-    const data = {
+    const data: Review = {
       locationId,
       locationName,
-      date: Date.now(),
+      date: new Date(),
       commentData: {
         opName: userName,
         anon,
@@ -101,11 +102,9 @@ export function CreateReview({ openModal }) {
       },
     };
 
-    setDb((prev) => {
-      prev.push(data);
-      localStorage.setItem("db", JSON.stringify(prev));
-      return prev;
-    });
+    reviewsCopy.push(data)
+    updateReviews(reviewsCopy)
+    localStorage.setItem("db", JSON.stringify(reviewsCopy));
 
     console.log("submitted successfully");
     console.log(data);
@@ -130,14 +129,14 @@ export function CreateReview({ openModal }) {
   // }, [rating]);
 
   useEffect(() => {
-    console.log(db);
-  }, [db]);
+    console.log(reviews);
+  }, [reviews]);
 
   return (
     <div className="fixed w-full h-full flex flex-col items-center justify-center">
       <div className="absolute z-10 w-full h-full bg-dark-blue-grey/90" onClick={() => openModal(false)}></div>
 
-      <div className="relative z-20 w-3/5 p-4 flex flex-col items-stretch justify-start gap-4 rounded-md bg-milk-white text-sm">
+      <div className="relative z-20 w-11/12 sm:w-4/5 max-w-screen-md p-4 flex flex-col items-stretch justify-start gap-4 rounded-md bg-milk-white text-sm">
         {amenitiesOpen && (
           <div
             className="absolute left-0 top-0 z-[5] h-full w-full bg-transparent"

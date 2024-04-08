@@ -1,5 +1,5 @@
 import React from "react";
-import { IoSearchOutline } from "react-icons/io5";
+import { IoSearchOutline, IoClose } from "react-icons/io5";
 
 interface SearchProps {
   className?: string;
@@ -22,7 +22,7 @@ export function Search({ className, iconClassName, inputClassName, value, onChan
         onChange={(e) => onChange(e.target.value)}
       />
 
-      {/*{searchInput.length > 0 && <IoClose className="ms-auto" onClick={() => setSearchInput("")} />}*/}
+      {value.length > 0 && <IoClose className="ms-auto" onClick={() => onChange("")} />}
     </div>
   );
 }
