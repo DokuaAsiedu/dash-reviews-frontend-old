@@ -3,22 +3,22 @@ import { GeneralLayout } from "@/layouts";
 import { CiBookmark } from "react-icons/ci";
 import { IoShareSocialOutline } from "react-icons/io5";
 import { CreateReview, ReviewCard, Search, Tag } from "@/components";
-import { useContext, useEffect, useMemo, useState } from "react";
-import { DbContext } from "@/providers/db-provider";
+import { useMemo, useState } from "react";
+import { useDbProvider } from "@/providers/db-provider";
 import Image from "next/image";
-import Avatar from "@/assets/avatar.svg";
 
 export default function AllReviews() {
+  const locationName = "Bonny and Clyde Street, Ajao Estate, Lagos";
   const [showModal, setShowModal] = useState(false);
+  const [searchInput, setSearchInput] = useState(locationName)
   const locationId = 0;
 
-  const { db } = useContext(DbContext);
-  const locationName = "Bonny and Clyde Street, Ajao Estate, Lagos";
+  const { reviews } = useDbProvider();
   const userName = "Jane Doe";
-  const numOfReviews = useMemo(() => db.filter((item) => item.locationId === locationId).length, [db]);
+  const numOfReviews = useMemo(() => reviews.filter((item) => item.locationId === locationId).length, [reviews]);
 
   return (
-    <GeneralLayout navbar={<Search />}>
+    <GeneralLayout navbar={<Search value={searchInput} onChange={setSearchInput} />}>
       <div className="container flex flex-col items-stretch justify-start gap-2">
         <div className="flex flex-row items-center justify-start gap-2">
           <div>
@@ -53,7 +53,7 @@ export default function AllReviews() {
         </div>
 
         <div className="px-2 flex flex-row items-center justify-start gap-4 overflow-x-scroll hide-scrollbar">
-          {db
+          {reviews
             .filter((item) => item.locationId === locationId)
             .map((item) =>
               item.commentData.amenities.map((el, index) => {
@@ -65,15 +65,15 @@ export default function AllReviews() {
 
       <div className="container min-h-0 grid grid-cols-2">
         <div className="min-h-0 flex flex-col items-stretch justify-start overflow-y-auto hide-scrollbar *:border-b-[1px] *:border-b-black">
-          {db
+          {reviews
             .filter((item) => item.locationId === locationId)
             .map((item, index) => {
-              return <ReviewCard key={`item-${index}`} itemData={item} />;
+              return <ReviewCard key={`item-${index}`} review={item} />;
             })}
         </div>
 
         <div className="min-h-0 grid grid-cols-2 content-start gap-4 overflow-y-auto hide-scrollbar">
-          {db
+          {reviews
             .filter((item) => item.locationId === locationId)
             .map((item) =>
               // console.log(item.commentData.pictureUrls)
