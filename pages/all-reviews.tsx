@@ -5,7 +5,6 @@ import { IoShareSocialOutline } from "react-icons/io5";
 import { CreateReview, ReviewCard, Search, Tag } from "@/components";
 import { useMemo, useState } from "react";
 import { useDbProvider } from "@/providers/db-provider";
-import Image from "next/image";
 
 export default function AllReviews() {
   const locationName = "Bonny and Clyde Street, Ajao Estate, Lagos";
@@ -14,7 +13,6 @@ export default function AllReviews() {
   const locationId = 0;
 
   const { reviews } = useDbProvider();
-  const userName = "Jane Doe";
   const numOfReviews = useMemo(() => reviews.filter((item) => item.locationId === locationId).length, [reviews]);
 
   return (
