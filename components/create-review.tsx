@@ -1,21 +1,22 @@
 import { AMENITIES } from "@/constants";
-import { DbContext, useDbProvider } from "@/providers/db-provider";
-import React, { useContext, useEffect, useRef, useState } from "react";
+import { useDbProvider } from "@/providers/db-provider";
+import React, { useEffect, useRef, useState } from "react";
 // import { createPortal } from "react-dom";
 // import { createPortal } from "react-dom";
 import { AiFillStar } from "react-icons/ai";
 import { RiArrowDropDownLine } from "react-icons/ri";
+import { createPortal } from "react-dom";
 // import { AMENITIES } from "../constants";
 // import { DbContext } from "../App";
 
-export function CreateReview({ openModal }: {openModal: (key: boolean) => void}) {
+export function CreateReview({ openModal }: { openModal: (key: boolean) => void }) {
   const [amenitiesOpen, setAmenitiesOpen] = useState(false);
-  const [amenities, setAmenities] = useState([]);
+  const [amenities, setAmenities] = useState<string[]>([]);
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState("");
   const [anon, setAnon] = useState(false);
   const [canSubmit, setCanSubmit] = useState(false);
-  const starsRef = useRef([]);
+  const starsRef = useRef<HTMLElement[]>([]);
 
   const { reviews, updateReviews } = useDbProvider();
 
@@ -23,11 +24,11 @@ export function CreateReview({ openModal }: {openModal: (key: boolean) => void})
   const locationName = "Bonny and Clyde Street, Ajao Estate, Lagos";
   const userName = "Jane Doe";
 
-  const assignRef = (el, index) => {
+  const assignRef = (el: HTMLDivElement, index: number) => {
     starsRef.current[index] = el;
   };
 
-  const handleAmenitiesChange = (e) => {
+  const handleAmenitiesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
     const amenitiesCopy = [...amenities];
 
@@ -41,19 +42,19 @@ export function CreateReview({ openModal }: {openModal: (key: boolean) => void})
     setAmenities(amenitiesCopy);
   };
 
-  const handleStarClick = (event, index) => {
+  const handleStarClick = (event: React.MouseEvent<SVGElement, MouseEvent>, index: number) => {
     setRating(index + 1);
 
     starsRef.current.forEach((item, i) => {
-      item.firstElementChild.classList.remove(
+      item.firstElementChild?.classList.remove(
         "fill-transparent",
         "fill-golden",
         // "fill-yellow-200",
       );
       if (i <= index) {
-        item.firstElementChild.classList.add("fill-golden");
+        item.firstElementChild?.classList.add("fill-golden");
       } else {
-        item.firstElementChild.classList.add("fill-transparent");
+        item.firstElementChild?.classList.add("fill-transparent");
       }
     });
 
@@ -63,26 +64,26 @@ export function CreateReview({ openModal }: {openModal: (key: boolean) => void})
     // }
   };
 
-  const handleStarHover = (event?, index?) => {
-    const eventType = event.type;
-    // console.log(eventType);
-    if (eventType === "mouseover") {
-      for (let i = 0; i <= index; i++) {
-        starsRef.current[i].firstElementChild.classList.add("fill-yellow-200");
-        starsRef.current[i].firstElementChild.classList.remove("fill-transparent");
-      }
-    } else if (eventType === "mouseleave") {
-      starsRef.current.forEach((item) => {
-        item.firstElementChild.classList.remove("fill-yellow-200");
-        item.firstElementChild.classList.add("fill-transparent");
-      });
-    }
-    // console.log(starsRef.current);
-  };
+  // const handleStarHover = (event?, index?) => {
+  //   const eventType = event.type;
+  //   // console.log(eventType);
+  //   if (eventType === "mouseover") {
+  //     for (let i = 0; i <= index; i++) {
+  //       starsRef.current[i].firstElementChild.classList.add("fill-yellow-200");
+  //       starsRef.current[i].firstElementChild.classList.remove("fill-transparent");
+  //     }
+  //   } else if (eventType === "mouseleave") {
+  //     starsRef.current.forEach((item) => {
+  //       item.firstElementChild.classList.remove("fill-yellow-200");
+  //       item.firstElementChild.classList.add("fill-transparent");
+  //     });
+  //   }
+  //   // console.log(starsRef.current);
+  // };
 
   const handleSubmit = () => {
     // console.log({ amenities, rating, review, anon });
-    const reviewsCopy = [...reviews]
+    const reviewsCopy = [...reviews];
 
     const data: Review = {
       locationId,
@@ -102,8 +103,8 @@ export function CreateReview({ openModal }: {openModal: (key: boolean) => void})
       },
     };
 
-    reviewsCopy.push(data)
-    updateReviews(reviewsCopy)
+    reviewsCopy.push(data);
+    updateReviews(reviewsCopy);
     localStorage.setItem("db", JSON.stringify(reviewsCopy));
 
     console.log("submitted successfully");
@@ -132,8 +133,8 @@ export function CreateReview({ openModal }: {openModal: (key: boolean) => void})
     console.log(reviews);
   }, [reviews]);
 
-  return (
-    <div className="fixed w-full h-full flex flex-col items-center justify-center">
+  return createPortal(
+    <div className="fixed top-0 left-0 w-full h-full flex flex-col items-center justify-center z-10">
       <div className="absolute z-10 w-full h-full bg-dark-blue-grey/90" onClick={() => openModal(false)}></div>
 
       <div className="relative z-20 w-11/12 sm:w-4/5 max-w-screen-md p-4 flex flex-col items-stretch justify-start gap-4 rounded-md bg-milk-white text-sm">
@@ -158,7 +159,7 @@ export function CreateReview({ openModal }: {openModal: (key: boolean) => void})
           </button>
           {amenitiesOpen && (
             <div className="relative">
-              <div className="absolute left-0 right-0 z-10 w-full p-2 grid grid-cols-5 content-start gap-y-4 bg-blue-100">
+              <div className="absolute left-0 right-0 z-10 w-full p-2 grid grid-cols-3 md:grid-cols-5 content-start gap-y-4 bg-blue-100">
                 {AMENITIES.map((item, index) => {
                   return (
                     <div key={`item-${index}`} className="flex flex-row items-center justify-start gap-2 text-sm">
@@ -188,7 +189,7 @@ export function CreateReview({ openModal }: {openModal: (key: boolean) => void})
                   key={`item-${index}`}
                   ref={(e) => {
                     // console.log(e);
-                    assignRef(e, index);
+                    assignRef(e as HTMLDivElement, index);
                   }}>
                   <AiFillStar
                     className="text-2xl stroke-[15px] fill-transparent cursor-pointer"
@@ -237,6 +238,7 @@ export function CreateReview({ openModal }: {openModal: (key: boolean) => void})
           </div>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { AiFillLike, AiFillDislike } from "react-icons/ai";
 import { FaCommentAlt } from "react-icons/fa";
 import { AiFillStar } from "react-icons/ai";
@@ -8,6 +8,7 @@ import Avatar from "@/assets/avatar.svg";
 
 interface ReviewCardProps {
   review: Review;
+  showAllStars?: boolean;
 }
 
 export function ReviewCard({
@@ -15,19 +16,31 @@ export function ReviewCard({
     locationName,
     commentData: { opName, likeCount, dislikeCount, commentCount, commentText, rating, anon, amenities },
   },
+  showAllStars,
 }: ReviewCardProps) {
   const pathname = usePathname();
 
+  const formattedOpName = useMemo(() => {
+    return (
+      opName
+        .split(" ")
+        .map((part, idx) => {
+          if (idx > 0) return part[0];
+          return part;
+        })
+        .join(" ") + "."
+    );
+  }, [opName]);
+
   return (
     <div
-      className={`min-w-[80%] p-4 flex flex-col items-stretch justify-start whitespace-normal ${pathname === "/" ? "bg-white rounded-xl" : "gap-2"}`}>
+      className={`min-w-[80%] p-4 flex flex-col items-stretch justify-start whitespace-normal border-b-[1px] border-b-gray-200 ${pathname === "/" ? "bg-white rounded-xl" : "gap-2"}`}>
       <div className="flex flex-row items-center justify-start gap-2">
-        <div className="">
-          <Image src={Avatar} width={32} height={32} alt="pic" className="h-fit aspect-square rounded-full" />
-        </div>
+        <Image src={Avatar} width={32} height={32} alt="pic" className="h-fit aspect-square rounded-full" />
 
-        <div className={`flex ${pathname === "/" ? "flex-col items-start" : "flex-col md:flex-row items-start md:items-center gap-2"}`}>
-          <p className="font-bold">{anon ? "Anonymous" : opName}</p>
+        <div
+          className={`flex ${pathname === "/" ? "flex-col items-start" : "flex-col md:flex-row items-start md:items-center md:gap-2"}`}>
+          <p className="font-bold">{anon ? "Anonymous" : formattedOpName}</p>
           <p className="text-xs">2 months ago</p>
         </div>
 
@@ -70,7 +83,7 @@ export function ReviewCard({
           <p>{dislikeCount}</p>
         </div>
 
-        <div className="flex flex-row items-center justify-start gap-1">
+        <div className="flex flex-row items-center justify-start gap-1 ms-6">
           <FaCommentAlt
             className={`${pathname === "/" ? "fill-grey-goose" : "fill-transparent stroke-[50px] stroke-down-river"}`}
           />
