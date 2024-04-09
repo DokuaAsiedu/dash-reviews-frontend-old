@@ -5,7 +5,7 @@ const nextConfig = {
   // distDir: "docs",
   // assetPrefix: "/dash-reviews-frontend/",
   // basePath: "/dash-reviews-frontend",
-  images: { unoptimized: true },
+  // images: { unoptimized: true },
 };
 
 export default nextConfig;
