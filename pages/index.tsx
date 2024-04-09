@@ -2,6 +2,7 @@ import { ReviewCard, Search } from "@/components";
 import { useDbProvider } from "@/providers/db-provider";
 import { GeneralLayout } from "@/layouts";
 import React, { useState } from "react";
+import Link from "next/link";
 
 export default function Home() {
   const { reviews } = useDbProvider();
@@ -18,17 +19,22 @@ export default function Home() {
               See through the lenses of people who have lived or visited the neighbourhood you might have in mind.
             </p>
 
+            
             <Search className="border-geyser bg-alice-blue w-full" value={searchKey} onChange={setSearchKey} />
+            
 
-            <button className="py-2 px-10 bg-ultramarine-blue text-white rounded-md capitalize">SEARCH</button>
+            <Link href="/all-reviews">
+              <button className="py-2 px-10 bg-ultramarine-blue text-white rounded-md capitalize">SEARCH</button>
+            </Link>
           </div>
+          
 
           <div className="relative min-h-0 grid grid-cols-1">
             <div className="min-h-0 max-lg:overflow-x-auto lg:overflow-y-auto flex flex-row lg:grid lg:grid-cols-2 gap-4 hide-scrollbar">
               {reviews
                 .filter((item, index) => index <= 6)
                 .map((review, index) => {
-                  return <ReviewCard key={`item-${index}`} review={review} />;
+                  return <ReviewCard key={`item-${index}`} review={review} showAllStars={false} showAmenity={true} wrapperClassName="rounded-xl bg-white" headerClassName="flex-col items-start" likeClassName="fill-grey-goose" dislikeClassName="fill-grey-goose" commentClassName="fill-grey-goose" />;
                 })}
             </div>
 

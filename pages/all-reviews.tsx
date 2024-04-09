@@ -18,11 +18,11 @@ export default function AllReviews() {
   return (
     <GeneralLayout
       navbarClassName="bg-alice-blue"
-      navbarContent={<Search value={searchInput} onChange={setSearchInput} className="max-w-screen-sm" />}>
+      navbarContent={<Search value={searchInput} onChange={setSearchInput} className="max-w-screen-sm bg-milk-white" />}>
       <div className="flex-1 overflow-auto">
         <div className="bg-alice-blue">
           <div className="container flex flex-col items-stretch justify-start gap-2 pb-6">
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2">
               <div className="flex flex-col gap-1 md:gap-0">
                 <h2 className="font-bold text-2xl">{locationName}</h2>
 
@@ -66,25 +66,25 @@ export default function AllReviews() {
           </div>
         </div>
 
-        <div className="container grid grid-cols-1 md:grid-cols-3 gap-4 py-4">
+        <div className="container grid grid-cols-1 lg:grid-cols-3 gap-4 py-4">
           <div className="col-span-2 flex flex-col justify-start order-2 md:order-1">
             {reviews
               .filter((item) => item.locationId === locationId)
               .map((item, index) => {
-                return <ReviewCard key={`item-${index}`} review={item} />;
+                return <ReviewCard key={`item-${index}`} review={item} showAllStars={false}  wrapperClassName="gap-2" headerClassName="flex-col md:flex-row items-start md:items-center md:gap-2" likeClassName="fill-transparent stroke-[50px] stroke-down-river" dislikeClassName="fill-transparent stroke-[50px] stroke-down-river" commentClassName="fill-transparent stroke-[50px] stroke-down-river" />;
               })}
           </div>
 
-          <div className="col-span-1 order-1 md:order-2 grid grid-cols-2 gap-4">
+          <div className="col-span-1 order-1 lg:order-2 grid grid-cols-2 gap-4">
             {reviews
               .filter((item) => item.locationId === locationId)
               .reduce((imgs, review) => [...imgs, ...review.commentData.pictureUrls], [] as string[])
-              .map((imgUrl, idx) => {
+              .map((imgUrl, index) => {
                 return (
-                  <div key={idx} className="w-full aspect-square overflow-hidden rounded relative">
+                  <div key={index} className="w-full aspect-square overflow-hidden rounded relative">
                     <img src={imgUrl} alt="image alt" className="w-full h-full object-cover" />
 
-                    {idx === 3 && (
+                    {index === 3 && (
                       <div className="absolute top-0 left-0 w-full h-full bg-black/50 grid place-items-center z-[1]">
                         <p className="text-center uppercase text-white">View More</p>
                       </div>
