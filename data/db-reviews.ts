@@ -17,7 +17,10 @@ export const DB_REVIEWS: Review[] = [
       commentCount: 8,
       amenities: ["security", "quiet"],
       rating: 3,
-      pictureUrls: ["/assets/location-images/img-1.jpg", "/assets/location-images/img-2.jpg"],
+      pictureUrls: [
+        "/dash-reviews-frontend/assets/location-images/img-1.jpg",
+        "/dash-reviews-frontend/assets/location-images/img-2.jpg",
+      ],
     },
   },
   {
@@ -34,7 +37,10 @@ export const DB_REVIEWS: Review[] = [
       commentCount: 8,
       amenities: ["water", "quiet"],
       rating: 3,
-      pictureUrls: ["/assets/location-images/img-3.jpg", "/assets/location-images/img-4.jpg"],
+      pictureUrls: [
+        "/dash-reviews-frontend/assets/location-images/img-3.jpg",
+        "/dash-reviews-frontend/assets/location-images/img-4.jpg",
+      ],
     },
   },
 ];
