@@ -2,13 +2,18 @@ import React, { useMemo } from "react";
 import { AiFillLike, AiFillDislike } from "react-icons/ai";
 import { FaCommentAlt } from "react-icons/fa";
 import { AiFillStar } from "react-icons/ai";
-import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Avatar from "@/assets/avatar.svg";
 
 interface ReviewCardProps {
   review: Review;
   showAllStars?: boolean;
+  showAmenity?: boolean;
+  wrapperClassName?: string;
+  headerClassName?: string;
+  likeClassName?: string;
+  dislikeClassName?: string;
+  commentClassName?: string;
 }
 
 export function ReviewCard({
@@ -17,8 +22,13 @@ export function ReviewCard({
     commentData: { opName, likeCount, dislikeCount, commentCount, commentText, rating, anon, amenities },
   },
   showAllStars,
+  showAmenity,
+  wrapperClassName,
+  headerClassName,
+  likeClassName,
+  dislikeClassName,
+  commentClassName,
 }: ReviewCardProps) {
-  const pathname = usePathname();
 
   const formattedOpName = useMemo(() => {
     return (
@@ -34,17 +44,17 @@ export function ReviewCard({
 
   return (
     <div
-      className={`min-w-[80%] p-4 flex flex-col items-stretch justify-start whitespace-normal border-b-[1px] border-b-gray-200 ${pathname === "/" ? "bg-white rounded-xl" : "gap-2"}`}>
+      className={`min-w-[80%] p-4 flex flex-col items-stretch justify-start whitespace-normal border-b-[1px] border-b-gray-200 ${wrapperClassName}`}>
       <div className="flex flex-row items-center justify-start gap-2">
         <Image src={Avatar} width={32} height={32} alt="pic" className="h-fit aspect-square rounded-full" />
 
         <div
-          className={`flex ${pathname === "/" ? "flex-col items-start" : "flex-col md:flex-row items-start md:items-center md:gap-2"}`}>
+          className={`flex ${headerClassName}`}>
           <p className="font-bold">{anon ? "Anonymous" : formattedOpName}</p>
           <p className="text-xs">2 months ago</p>
         </div>
 
-        {pathname === "/" ? (
+        {showAllStars ? (
           <div className="ms-auto">
             <p className="text-xs font-bold">{locationName.split(" ").slice(-2).join(" ")}</p>
             <div className="flex flex-row items-center">
@@ -71,26 +81,26 @@ export function ReviewCard({
       <div className="mt-auto flex flex-row items-center justify-start gap-3 text-base">
         <div className="flex flex-row items-center justify-start gap-1">
           <AiFillLike
-            className={`${pathname === "/" ? "fill-grey-goose" : "fill-transparent stroke-[50px] stroke-down-river"}`}
+            className={`${likeClassName}`}
           />
           <p>{likeCount}</p>
         </div>
 
         <div className="flex flex-row items-center justify-start gap-1">
           <AiFillDislike
-            className={`${pathname === "/" ? "fill-grey-goose" : "fill-transparent stroke-[50px] stroke-down-river"}`}
+            className={`${dislikeClassName}`}
           />
           <p>{dislikeCount}</p>
         </div>
 
         <div className="flex flex-row items-center justify-start gap-1 ms-6">
           <FaCommentAlt
-            className={`${pathname === "/" ? "fill-grey-goose" : "fill-transparent stroke-[50px] stroke-down-river"}`}
+            className={`${commentClassName}`}
           />
           <p>{commentCount}</p>
         </div>
 
-        {pathname === "/" && (
+        {showAmenity && (
           <div className="ms-auto px-2 py-px rounded-xl border-[1px] border-red-900 bg-red-200 text-xs">
             {amenities[0]}
           </div>

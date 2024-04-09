@@ -18,11 +18,11 @@ export default function AllReviews() {
   return (
     <GeneralLayout
       navbarClassName="bg-alice-blue"
-      navbarContent={<Search value={searchInput} onChange={setSearchInput} className="max-w-screen-sm" />}>
+      navbarContent={<Search value={searchInput} onChange={setSearchInput} className="max-w-screen-sm bg-milk-white" />}>
       <div className="flex-1 overflow-auto">
         <div className="bg-alice-blue">
           <div className="container flex flex-col items-stretch justify-start gap-2 pb-6">
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2">
               <div className="flex flex-col gap-1 md:gap-0">
                 <h2 className="font-bold text-2xl">{locationName}</h2>
 
@@ -71,7 +71,7 @@ export default function AllReviews() {
             {reviews
               .filter((item) => item.locationId === locationId)
               .map((item, index) => {
-                return <ReviewCard key={`item-${index}`} review={item} />;
+                return <ReviewCard key={`item-${index}`} review={item} showAllStars={false}  wrapperClassName="gap-2" headerClassName="flex-col md:flex-row items-start md:items-center md:gap-2" likeClassName="fill-transparent stroke-[50px] stroke-down-river" dislikeClassName="fill-transparent stroke-[50px] stroke-down-river" commentClassName="fill-transparent stroke-[50px] stroke-down-river" />;
               })}
           </div>
 
