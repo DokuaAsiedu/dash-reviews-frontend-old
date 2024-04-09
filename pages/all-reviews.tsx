@@ -66,7 +66,7 @@ export default function AllReviews() {
           </div>
         </div>
 
-        <div className="container grid grid-cols-1 md:grid-cols-3 gap-4 py-4">
+        <div className="container grid grid-cols-1 lg:grid-cols-3 gap-4 py-4">
           <div className="col-span-2 flex flex-col justify-start order-2 md:order-1">
             {reviews
               .filter((item) => item.locationId === locationId)
@@ -75,16 +75,16 @@ export default function AllReviews() {
               })}
           </div>
 
-          <div className="col-span-1 order-1 md:order-2 grid grid-cols-2 gap-4">
+          <div className="col-span-1 order-1 lg:order-2 grid grid-cols-2 gap-4">
             {reviews
               .filter((item) => item.locationId === locationId)
               .reduce((imgs, review) => [...imgs, ...review.commentData.pictureUrls], [] as string[])
-              .map((imgUrl, idx) => {
+              .map((imgUrl, index) => {
                 return (
-                  <div key={idx} className="w-full aspect-square overflow-hidden rounded relative">
+                  <div key={index} className="w-full aspect-square overflow-hidden rounded relative">
                     <img src={imgUrl} alt="image alt" className="w-full h-full object-cover" />
 
-                    {idx === 3 && (
+                    {index === 3 && (
                       <div className="absolute top-0 left-0 w-full h-full bg-black/50 grid place-items-center z-[1]">
                         <p className="text-center uppercase text-white">View More</p>
                       </div>
